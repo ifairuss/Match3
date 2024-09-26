@@ -12,7 +12,9 @@ namespace Match3
         private BackgroundSlot _slot;
         private UIBoard _board;
 
-        private void Start()
+        private bool _isInitialized;
+
+        public void Init()
         {
             _board = GameObject.FindGameObjectWithTag("GameManager").GetComponent<UIBoard>();
             _slotBox = GameObject.FindGameObjectWithTag("SlotBox").GetComponent<Transform>();
@@ -20,10 +22,15 @@ namespace Match3
             _slot = GetComponent<BackgroundSlot>();
 
             _verticalRow = new BackgroundSlot[_board.Height];
+
+            _isInitialized = true;
         }
 
         private void Update()
         {
+            if (!_isInitialized)
+                return;
+
             AddSlot();
             Checking_verticalRow();
         }
@@ -52,15 +59,20 @@ namespace Match3
         {
             for (int i = 1; i < _verticalRow.Length; i++)
             {
-                ActionFish fishGameObject = _verticalRow[i - 1].transform.GetChild(0).GetComponent<ActionFish>();
-                BackgroundSlot fishPosition = _verticalRow[i].GetComponent<BackgroundSlot>();
-                if (_verticalRow[i].IsEmpty == true)
+                if (_verticalRow[i - 1].transform.childCount > 0)
                 {
-                    ActionFish.SendTransformFish(fishGameObject, fishPosition);
-                }
-                else
-                {
-                    //dprint($"{_verticalRow[i]} - Ne pustoi");
+                    ActionFish fishGameObject = _verticalRow[i - 1].transform.GetChild(0).GetComponent<ActionFish>();
+                    BackgroundSlot previousePosition = _verticalRow[i - 1].GetComponent<BackgroundSlot>();
+                    BackgroundSlot fishPosition = _verticalRow[i].GetComponent<BackgroundSlot>();
+                    if (_verticalRow[i].IsEmpty)
+                    {
+                        ActionFish.SendTransformFish(fishGameObject, fishPosition);
+                        previousePosition.Fish = null;
+                    }
+                    else
+                    {
+                        //dprint($"{_verticalRow[i]} - Ne pustoi");
+                    }
                 }
             }
         }

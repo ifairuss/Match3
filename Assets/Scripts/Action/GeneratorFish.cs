@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 namespace Match3
@@ -13,46 +14,48 @@ namespace Match3
         [SerializeField] private GameObject[] _allFishVariable;
         [SerializeField] private UIBoard _board;
 
-        private void Awake()
+        public void Init()
         {
-            Initialized();
+            _spawnTime = _timeToSpawn;
+            StartCoroutine(SpawnRoutine());
         }
 
-        private void Update()
+        private IEnumerator SpawnRoutine()
         {
-            Initialized();
-
-            if (_spawnTime > 0)
+            while (true)
             {
-                _spawnTime -= 0.1f * Time.deltaTime;
+                if (_spawnTime > 0)
+                {
+                    _spawnTime -= Time.deltaTime;
+                }
+                else
+                {
+                    Spawn();
+                }
+
+                yield return null;
             }
         }
 
-        private void Initialized()
+        private void Spawn()
         {
-            if(_spawnTime <= 0)
+            for (int x = 0; x < _board.Width; x++)
             {
-                for (int x = 0; x < _board.Width; x++)
+                var slot = _board.SlotBox.transform.GetChild(x).GetComponent<BackgroundSlot>();
+
+                if (slot.IsEmpty)
                 {
-                    var slots = _board.SlotBox.transform.GetChild(x).GetComponent<BackgroundSlot>();
-
-                    if (slots.IsEmpty == true)
+                    if (slot.GetComponent<BackgroundSlot>() != null)
                     {
-                        if (slots.GetComponent<BackgroundSlot>() != null)
-                        {
-                            int randomFish = Random.Range(0, _allFishVariable.Length);
+                        int randomFish = Random.Range(0, _allFishVariable.Length);
 
-                            var fish = Instantiate(_allFishVariable[randomFish], slots.transform.position, Quaternion.identity);
-
-                            fish.transform.SetParent(slots.transform);
-
-                            slots.IsEmpty = false;
-
-                            _spawnTime = _timeToSpawn;
-                        }
+                        var fish = Instantiate(_allFishVariable[randomFish], slot.transform.position, Quaternion.identity, slot.transform);
+                        slot.Fish = fish;
                     }
                 }
             }
+
+            _spawnTime = _timeToSpawn;
         }
     }
 }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Match3
 {
@@ -10,15 +11,28 @@ namespace Match3
 
         [Header("Board Component")]
         [SerializeField] private GameObject _backgroundSlotPrefab;
+        [SerializeField] private GridLayoutGroup _boardLayout;
+        [SerializeField] private GeneratorFish _generatorFish;
 
         public static BackgroundSlot[,] _slots;
 
-        public Transform SlotBox;
+        public RectTransform SlotBox;
 
-        private void Awake()
+        private void Start()
         {
+            var cellSize = Mathf.Min(SlotBox.rect.width / Width, SlotBox.rect.height / Height) - Width * 5f;
+            _boardLayout.cellSize = new Vector2(cellSize, cellSize);
             _slots = new BackgroundSlot[Width, Height];
             SetBoardSlot();
+            _generatorFish.Init();
+
+            foreach (var slot in _slots)
+            {
+                if (slot.gameObject.TryGetComponent<CheckingSlots>(out var checkingSlots)) 
+                {
+                    checkingSlots.Init();
+                }
+            }
         }
 
         private void SetBoardSlot()
@@ -29,13 +43,11 @@ namespace Match3
                 {
                     Vector2 tempPosition = new Vector2(x, y);
 
-                    var slot = Instantiate(_backgroundSlotPrefab, tempPosition, Quaternion.identity);
-                    var checkSlot = slot.gameObject.GetComponent<CheckingSlots>();
+                    var slot = Instantiate(_backgroundSlotPrefab, tempPosition, Quaternion.identity, SlotBox);
                     var slotComponent = slot.gameObject.GetComponent<BackgroundSlot>();
 
-                    slot.transform.SetParent(SlotBox);
-
                     slot.gameObject.name = $"{x},{y}";
+                    _slots[x, y] = slotComponent;
 
                     slotComponent.yName = y;
 

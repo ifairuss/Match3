@@ -21,7 +21,7 @@ namespace Match3
 
         public void TransformFish(ActionFish fish,BackgroundSlot slot)
         {
-            if (slot.IsEmpty == true)
+            if (slot.IsEmpty)
             {
                 fish.transform.SetParent(_dragBox);
                 StartCoroutine(TransformFishInNewSlot(fish, slot));
@@ -32,8 +32,9 @@ namespace Match3
         {
             yield return new WaitForSeconds(0.2f);
 
+            slot.Fish = fish.gameObject;
             fish.transform.SetParent(slot.transform);
-            slot.IsEmpty = false;
+            fish.transform.localPosition = Vector3.zero;
         }
     }
 }

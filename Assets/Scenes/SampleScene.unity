@@ -557,6 +557,8 @@ MonoBehaviour:
   Width: 5
   Height: 5
   _backgroundSlotPrefab: {fileID: 5065333378484714345, guid: 2bd1a52fce26e75439145088ceac5bc4, type: 3}
+  _boardLayout: {fileID: 2068284044}
+  _generatorFish: {fileID: 1707618247}
   SlotBox: {fileID: 2068284043}
 --- !u!114 &1707618247
 MonoBehaviour:
@@ -570,7 +572,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e38f6c1d0b79564b9fe012bc9751272, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _timeToSpawn: 0.2
+  _timeToSpawn: 0.5
   _allFishVariable:
   - {fileID: 831289704811143586, guid: 821c7f7d85eda1442b4967835e6ee2de, type: 3}
   - {fileID: 5069411562510057062, guid: 4e5c7b020a9a5e346934831861722550, type: 3}
@@ -754,8 +756,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1953503546}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0.25441092}
+  m_AnchorMax: {x: 1, y: 0.75840396}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -775,7 +777,7 @@ MonoBehaviour:
     m_Left: 0
     m_Right: 0
     m_Top: 0
-    m_Bottom: 300
+    m_Bottom: 0
   m_ChildAlignment: 4
   m_StartCorner: 0
   m_StartAxis: 0

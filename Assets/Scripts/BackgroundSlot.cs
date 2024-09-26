@@ -9,12 +9,9 @@ namespace Match3
 
         public int yName;
 
-        public bool IsEmpty;
+        public bool IsEmpty => Fish == null;
 
-        private void Start()
-        {
-            IsEmpty = true;
-        }
+        public GameObject Fish;
 
         private void Update()
         {
@@ -23,18 +20,13 @@ namespace Match3
 
         private void CheckSlot()
         {
-            if(transform.childCount <= 0)
+            if (IsEmpty)
             {
-                IsEmpty = true;
                 _fishComponent = null;
             }
             else
             {
-                if(transform.GetChild(0) != null)
-                {
-                    IsEmpty = false;
-                    _fishComponent = transform.GetChild(0).GetComponent<ActionFish>();
-                }
+                _fishComponent = Fish.GetComponent<ActionFish>();
             }
         }
     }
