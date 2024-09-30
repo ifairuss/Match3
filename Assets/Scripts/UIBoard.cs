@@ -6,6 +6,8 @@ namespace Match3
     public class UIBoard : MonoBehaviour
     {
         [Header("Board Preferences")]
+        [SerializeField] private float _slotSize;
+        [Space]
         public int Width;
         public int Height;
 
@@ -20,7 +22,7 @@ namespace Match3
 
         private void Start()
         {
-            var cellSize = Mathf.Min(SlotBox.rect.width / Width, SlotBox.rect.height / Height) - Width * 5f;
+            var cellSize = Mathf.Min(SlotBox.rect.width / Width, SlotBox.rect.height / Height) - Width * _slotSize;
             _boardLayout.cellSize = new Vector2(cellSize, cellSize);
             _slots = new BackgroundSlot[Width, Height];
             SetBoardSlot();

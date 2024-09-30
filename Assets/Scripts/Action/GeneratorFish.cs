@@ -43,7 +43,7 @@ namespace Match3
             {
                 var slot = _board.SlotBox.transform.GetChild(x).GetComponent<BackgroundSlot>();
 
-                if (slot.IsEmpty)
+                if (slot.IsEmpty == true)
                 {
                     if (slot.GetComponent<BackgroundSlot>() != null)
                     {

@@ -554,6 +554,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2ebc90d178e3174f9782cf35435fd62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _slotSize: 0
   Width: 5
   Height: 5
   _backgroundSlotPrefab: {fileID: 5065333378484714345, guid: 2bd1a52fce26e75439145088ceac5bc4, type: 3}

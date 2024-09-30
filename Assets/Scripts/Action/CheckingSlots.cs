@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 namespace Match3
@@ -43,6 +43,7 @@ namespace Match3
                 for (int y = 0; y < _verticalRow.Length; y++)
                 {
                     var slot = _slotBox.GetChild(i).GetComponent<BackgroundSlot>();
+
                     if (_slot.yName == slot.yName)
                     {
                         if (_verticalRow[y] == null)
@@ -64,17 +65,20 @@ namespace Match3
                     ActionFish fishGameObject = _verticalRow[i - 1].transform.GetChild(0).GetComponent<ActionFish>();
                     BackgroundSlot previousePosition = _verticalRow[i - 1].GetComponent<BackgroundSlot>();
                     BackgroundSlot fishPosition = _verticalRow[i].GetComponent<BackgroundSlot>();
-                    if (_verticalRow[i].IsEmpty)
+
+                    if (_verticalRow[i].IsEmpty == true)
                     {
                         ActionFish.SendTransformFish(fishGameObject, fishPosition);
-                        previousePosition.Fish = null;
-                    }
-                    else
-                    {
-                        //dprint($"{_verticalRow[i]} - Ne pustoi");
+                        StartCoroutine(Timer(previousePosition));
                     }
                 }
             }
+        }
+
+        private IEnumerator Timer(BackgroundSlot previousePosition)
+        {
+            yield return new WaitForSeconds(0.2f);
+            previousePosition.Fish = null;
         }
     }
 }
