@@ -52,6 +52,7 @@ namespace Match3
                     _slots[x, y] = slotComponent;
 
                     slotComponent.yName = y;
+                    slotComponent.xName = x;
 
                     if (slot.gameObject.name == $"{0},{y}")
                     {
