@@ -1,3 +1,7 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,13 +24,19 @@ namespace Match3
 
         public RectTransform SlotBox;
 
+        public bool successChecking = false;
+        private float firstCheck;
+
         private void Start()
         {
+            firstCheck = 5;
+
             var cellSize = Mathf.Min(SlotBox.rect.width / Width, SlotBox.rect.height / Height) - Width * _slotSize;
             _boardLayout.cellSize = new Vector2(cellSize, cellSize);
             _slots = new BackgroundSlot[Width, Height];
             SetBoardSlot();
             _generatorFish.Init();
+            StartCoroutine(StartCheckFish());
 
             foreach (var slot in _slots)
             {
@@ -35,6 +45,16 @@ namespace Match3
                     checkingSlots.Init();
                 }
             }
+        }
+
+        public  IEnumerator StartCheckFish()
+        {
+            successChecking = false;
+            yield return new WaitForSeconds(firstCheck);
+            CheckFish();
+            yield return new WaitForSeconds(0.5f);
+            firstCheck = 3f;
+            successChecking = true;
         }
 
         private void SetBoardSlot()
@@ -58,6 +78,82 @@ namespace Match3
                     {
                         slot.gameObject.AddComponent<CheckingSlots>();
                     }
+                }
+            }
+        }
+
+        public void CheckFish()
+        {
+            var connectList = new List<ActionFish>();
+
+            CheckRow(connectList);
+            CheckColumn(connectList);
+
+
+            for(int i = 0; i < connectList.Count; i++)
+            {
+                connectList.Distinct();
+                Destroy(connectList[i].gameObject);
+                StartCoroutine(StartCheckFish());
+            }
+        }
+
+        private void CheckRow(List<ActionFish> connectList)
+        {
+            for(int y = 0; y < _slots.GetLength(1); y++)
+            {
+                var line = new List<ActionFish>();
+
+                for (int x = 0; x < _slots.GetLength(0) - 1; x++)
+                {
+                    var slot = _slots[y, x];
+                    var nextSlot = _slots[y, x + 1];
+
+                    if (slot.FishComponent.FishName == nextSlot.FishComponent.FishName)
+                    {
+                        line.Add(slot.FishComponent);
+                        line.Add(nextSlot.FishComponent);
+                        line.Distinct();
+                    }
+                    else if(line.Count > 0 && slot.FishComponent.FishName != nextSlot.FishComponent.FishName)
+                    {
+                        break;
+                    }
+                }
+
+                if (line.Count > 3)
+                {
+                    connectList.AddRange(line);
+                }
+            }
+        }
+
+        private void CheckColumn(List<ActionFish> connectList)
+        {
+            for (int x = 0; x < _slots.GetLength(0); x++)
+            {
+                var line = new List<ActionFish>();
+
+                for (int y = 0; y < _slots.GetLength(1) - 1; y++)
+                {
+                    var slot = _slots[y, x];
+                    var nextSlot = _slots[y + 1, x];
+
+                    if (slot.FishComponent.FishName == nextSlot.FishComponent.FishName)
+                    {
+                        line.Add(slot.FishComponent);
+                        line.Add(nextSlot.FishComponent);
+                        line.Distinct();
+                    }
+                    else if (line.Count > 0 && slot.FishComponent.FishName != nextSlot.FishComponent.FishName)
+                    {
+                        break;
+                    }
+                }
+
+                if (line.Count > 3)
+                {
+                    connectList.AddRange(line);
                 }
             }
         }

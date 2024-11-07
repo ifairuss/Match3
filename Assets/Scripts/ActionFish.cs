@@ -7,6 +7,8 @@ namespace Match3
     {
         public static event Action<ActionFish,BackgroundSlot> FishTransformPosotion;
 
+        public string FishName;
+
         public static void SendTransformFish(ActionFish fish, BackgroundSlot slot)
         {
             if(FishTransformPosotion != null) FishTransformPosotion.Invoke(fish, slot);

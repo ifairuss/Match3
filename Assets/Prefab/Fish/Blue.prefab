@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4242836472730168956}
   - component: {fileID: 1639152034659316721}
   m_Layer: 5
-  m_Name: Fish - 3
+  m_Name: Blue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -89,6 +89,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e04ed4a70fe1b24bbee60800cc782c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FishName: Blue
 --- !u!114 &1639152034659316721
 MonoBehaviour:
   m_ObjectHideFlags: 0

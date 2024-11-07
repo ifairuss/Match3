@@ -20,11 +20,6 @@ namespace Match3
             StartCoroutine(SpawnRoutine());
         }
 
-        public void UnInit()
-        {
-            StopAllCoroutines();
-        }
-
         private IEnumerator SpawnRoutine()
         {
             while (true)
